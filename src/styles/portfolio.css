@@ -1,0 +1,113 @@
+/* ---------- Portfolio page (src/styles/portfolio.css) ---------- */
+.pf { padding: clamp(104px, 13vw, 150px) clamp(16px, 4vw, 64px) 0; }
+.ph { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* Header */
+.pf-head {
+  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center; gap: clamp(16px, 4vw, 64px);
+}
+.pf-head h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.8rem, 6.4vw, 5.4rem); line-height: 0.98; letter-spacing: -0.01em; max-width: 9ch; }
+.pf-head p { margin-top: 20px; max-width: 24rem; color: var(--muted); font-size: 0.98rem; }
+
+/* 3D cluster */
+.pf-cluster { perspective: 1100px; width: 100%; max-width: 600px; justify-self: end; aspect-ratio: 1 / 0.9; }
+.pf-stage {
+  --mx: 0; --my: 0;
+  position: relative; width: 100%; height: 100%; transform-style: preserve-3d;
+  transform: rotateY(calc(var(--mx) * 14deg)) rotateX(calc(var(--my) * -10deg));
+  transition: transform 0.5s var(--ease);
+}
+.pf-card {
+  position: absolute; left: var(--l); top: var(--t); width: var(--w); aspect-ratio: 4 / 5;
+  overflow: hidden; border-radius: 10px; border: 1px solid rgba(255, 210, 160, 0.3);
+  transform: translateZ(var(--z)) rotateZ(var(--r)) rotateY(var(--ry));
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 0 60px rgba(255, 110, 20, 0.14);
+  animation: pf-float 7s ease-in-out var(--fd) infinite;
+}
+.pf-card img { width: 100%; height: 100%; object-fit: cover; }
+.pf-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(255, 255, 255, 0.16), transparent 40%); pointer-events: none; }
+@keyframes pf-float { 50% { translate: 0 -10px; } }
+
+/* Filters */
+.pf-filters { display: flex; flex-wrap: wrap; gap: 10px; margin: clamp(28px, 4vw, 48px) 0 clamp(20px, 3vw, 32px); }
+.pf-pill {
+  padding: 9px 20px; font-size: 0.82rem; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--muted);
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+.pf-pill:hover { color: var(--cream); border-color: rgba(243, 231, 214, 0.45); }
+.pf-pill.is-on { background: var(--cream); border-color: var(--cream); color: #120804; font-weight: 500; }
+
+/* Masonry grid */
+.pf-grid { columns: 3; column-gap: clamp(10px, 1.4vw, 20px); }
+.pf-grid li { break-inside: avoid; margin-bottom: clamp(10px, 1.4vw, 20px); animation: pf-in 0.7s var(--ease) both; animation-delay: var(--d); }
+@keyframes pf-in { from { opacity: 0; transform: translateY(16px); } }
+.pf-tile {
+  position: relative; display: block; width: 100%; overflow: hidden; padding: 0;
+  border-radius: 10px; border: 1px solid var(--line); text-align: left;
+  transition: transform 0.3s var(--ease), box-shadow 0.4s; will-change: transform;
+}
+.pf-tile:hover { box-shadow: 0 24px 60px rgba(255, 110, 20, 0.22); }
+.pf-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pf-tile .ph, .pf-tile img { transition: transform 0.9s var(--ease); }
+.pf-tile:hover .ph, .pf-tile:hover img { transform: scale(1.06); }
+.pf-tile__cap {
+  position: absolute; inset: auto 0 0 0; padding: 40px 16px 14px;
+  display: flex; flex-direction: column; gap: 1px;
+  background: linear-gradient(to top, rgba(5, 3, 2, 0.85), transparent);
+  opacity: 0; transform: translateY(8px); transition: opacity 0.35s, transform 0.35s var(--ease);
+}
+.pf-tile:hover .pf-tile__cap, .pf-tile:focus-visible .pf-tile__cap { opacity: 1; transform: none; }
+.pf-tile__title { font-family: var(--display); font-size: 1.3rem; line-height: 1.1; }
+.pf-tile__cat { font-size: 0.72rem; color: var(--muted); }
+@media (hover: none) { .pf-tile__cap { opacity: 1; transform: none; } }
+
+/* Footer row */
+.pf-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 12px; font-size: 0.8rem; color: var(--muted); }
+.pf .pf-more { margin-top: 0; background: none; color: var(--cream); cursor: pointer; font-family: inherit; }
+
+/* Lightbox */
+.lb {
+  position: fixed; inset: 0; z-index: 80; display: grid; place-items: center;
+  grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; padding: 20px;
+  background: rgba(5, 3, 2, 0.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  animation: fade-in 0.3s var(--ease);
+}
+@keyframes fade-in { from { opacity: 0; } }
+.lb__btn {
+  display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(243, 231, 214, 0.35); transition: background 0.25s, color 0.25s;
+}
+.lb__btn:hover { background: var(--amber); border-color: var(--amber); color: #120804; }
+.lb__close { position: absolute; top: 18px; right: 18px; z-index: 2; }
+.lb__fig { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; max-height: 100%; animation: lb-pop 0.5s var(--ease); }
+@keyframes lb-pop { from { opacity: 0; transform: perspective(1000px) rotateY(-10deg) scale(0.96); } }
+.lb__media {
+  position: relative; overflow: hidden; border-radius: 12px; border: 1px solid var(--line);
+  max-height: calc(100svh - 150px); max-width: 100%; height: calc(100svh - 150px); width: auto;
+  box-shadow: 0 40px 100px rgba(255, 110, 20, 0.18);
+}
+.lb__media img { width: 100%; height: 100%; object-fit: cover; }
+.lb__fig figcaption { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.lb__title { font-family: var(--display); font-size: 1.5rem; line-height: 1.1; }
+.lb__meta { font-size: 0.78rem; color: var(--muted); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .pf-head { grid-template-columns: 1fr; }
+  .pf-head h1 { max-width: none; }
+  .pf-cluster { justify-self: center; max-width: 460px; }
+  .pf-grid { columns: 2; }
+}
+@media (max-width: 720px) {
+  .lb { grid-template-columns: 1fr; padding: 12px; }
+  .lb__prev, .lb__next { position: absolute; bottom: 22px; z-index: 2; }
+  .lb__prev { left: calc(50% - 56px); }
+  .lb__next { right: calc(50% - 56px); }
+  .lb__media { height: auto; width: min(100%, 78svh * 0.8); max-height: calc(100svh - 190px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-card { animation: none; }
+  .pf-stage { transform: none !important; }
+}
